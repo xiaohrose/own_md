@@ -28,5 +28,31 @@ server {
 * proxy_pass 这个代理到什么地方去， 以上一个实例，是代理到nginx_boot， 但为什么会这样，算是一个套路，就是这么写，有时候不能钻死理，没啥用。
 
 
+### 反向代理
+今天看node nest小册，学习的是 nginx， 想着怎么代理，感觉代理学会了，应该算学会了一部分nginx 吧，其他都是扯淡。下面是关于 nginx 反向代理的实例，实测！
+
+```json
+upstream my_server {                                                         
+    server 192.168.0.104:8899;                                                
+    keepalive 2000;
+}
+
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  localhost;
+    location /my/ {
+        proxy_pass http://my_server/test;
+        proxy_set_header Host $host:$server_port;
+    }
+}
+```
+`upstream` name 声明一个 `proxy_pass` 后面http://name,根据上面的实例，输入 `http://localhost:80/my/` 这就跳转到    `192.168.0.104:8899` 该服务下；注意/test 这个是8899 服务当中的`/test`路由。
+
+注意⚠️： 在 跳转`/test`路由，尝试了很长时间，不知道   `/test`路由放在什么那里。这个下次再写
+
+
+
+
 相关文章链接
 ` https://mp.weixin.qq.com/s/nf9Yif4DYqmUMvqxgI8Hvw`
