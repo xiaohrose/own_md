@@ -1,21 +1,12 @@
-
-/**
- * 最长子序列
- */
-
-function longzixulie(nums) {
-
-    const dp = new Array(nums.length).fill(1)
+function beibao(n, c, w, value) {
 
 
-    for (let i = 1; i < nums.length; i++) {
+    const dp = new Array();
 
-        for (let j = i - 1; j >= 0; j--) {
-            if (nums[i] > nums[j]) {
-                dp[i] = Math.max(dp[i], dp[j] + 1);
-            }
+    for (let i = 0; i < n; i++) {
+        for (let v = w[i]; v <= c; v++) {
+            dp[i][v] = Math.max(dp[i - 1][v], dp[i - 1][v - w[i]] + value[i])
         }
     }
 
-    return Math.max(...dp)
 }
