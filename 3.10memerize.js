@@ -199,3 +199,51 @@ function delAllMulti(l) {
 
     return head.next;
 }
+
+/**
+ * 删除第 n 个节点
+ */
+
+function delNNode(l, n) {
+
+    let head = { next: l };
+    let p = head;
+    for (let i = 0; i <= n; i++) { // 这里需要确认下是否是正确的点
+        p = p.next;
+    }
+
+    let slow = head;
+
+    while (p) {
+        p = p.next;
+        slow = slow.next;
+    }
+
+    slow.next = slow.next.next;
+
+    return head.next
+
+}
+
+/**
+ * 检查是否是环形链表
+ * @param {*} l 
+ * @returns 
+ */
+
+function checkCircleLink(l) {
+
+    let p1 = p2 = l;
+
+    while (p1 && p2 && p2.next) {
+        p1 = p1.next;
+        p2 = p2.next.next;
+
+        if (p1 === p2) {
+            return true
+        }
+    }
+
+    return false
+
+}
