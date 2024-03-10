@@ -112,6 +112,7 @@ function rot(nums) {
 var minimumTotal = function (triangle) {
     let m = triangle.length, n = triangle[triangle.length - 1].length;
     let dp = new Array(m).fill(0).map(() => new Array(n).fill(0));
+    // 这里取第一个数组中的第一个（三角形顶点只有一个元素）
     dp[0][0] = triangle[0][0];
 
     for (let i = 1; i < m; i++) {
@@ -119,8 +120,8 @@ var minimumTotal = function (triangle) {
 
         //  这里不是n，猜猜他是什么😂
         for (let j = 1; j < n; j++) {
+            // 这里j = 1 的原因是上面已经把第一列数据已经计算
             dp[i][j] = Math.min(dp[i - 1][j], dp[i - 1][j - 1]) + triangle[i][j]
-
         }
 
         dp[i][i] = dp[i - 1][i - 1] + triangle[i][i]
