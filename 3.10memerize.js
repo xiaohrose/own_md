@@ -226,7 +226,7 @@ function delNNode(l, n) {
 }
 
 /**
- * 检查是否是环形链表
+ * 检查是否是环形链表 // 这里发现一个更好的方式来进行判断
  * @param {*} l 
  * @returns 
  */
@@ -245,5 +245,75 @@ function checkCircleLink(l) {
     }
 
     return false
-
 }
+
+
+function otherCircleCheck(head) { // 通过一个容器存储下，如果已经存了，就代已经经过了，有环！！！
+
+    let visited = new Set();
+
+    while (head) {
+        if (visited.has(head)) {
+            return true
+        } else {
+            visited.add(head);
+            head = head.next;
+        }
+    }
+
+    return false
+}
+
+
+/**
+ * 反转链表
+ */
+function reverseL(l) {
+    let pre = null, cur = l;
+
+    while (cur) {
+        l.next = cur.next;
+        cur.next = pre;
+        pre = cur
+        cur = l.next
+    }
+
+    l.next = pre;
+}
+
+/**
+ * 括号问题
+ */
+// 用一个 map 来维护左括号和右括号的对应关系
+const leftToRight = {
+    "(": ")",
+    "[": "]",
+    "{": "}"
+};
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+const isValid = function (s) {
+    if (!s) return true;
+    let stack = []
+
+    for (let i = 0; i < s.length; i++) {
+        let ch = s[i];
+
+        if (ch === '(' || ch === '[' || ch === '{') stack.push(leftToRight[ch])
+
+        else {
+            if (!stack.length || stack.pop() !== ch) {
+                return false
+            }
+        }
+    }
+
+    return !stack.length
+
+
+};
+
+console.log(isValid("({[]})"));
