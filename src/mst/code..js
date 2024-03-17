@@ -1,5 +1,6 @@
+// 生成合法的括号
 
-function test (n) {
+function kuohao (n) {
     if(!n)return ''
 
     let res = []
@@ -24,10 +25,4 @@ function test (n) {
             _dfs(left, right - 1, result + ')')
         }
     }
-
 }
-
-
-
-
-console.log(test(15))

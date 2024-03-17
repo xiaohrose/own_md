@@ -7,7 +7,7 @@ upstream nginx_boot{
    server 192.168.0.000:8090 weight=200 max_fails=2 fail_timeout=30s;  
    # 这里的IP请配置成你WEB服务所在的机器IP  
 }  
-  
+
 server {  
     location / {  
         root   html;  
@@ -21,7 +21,6 @@ server {
     }  
 }  
 ```
-
 
 刚接触一门新知识，需要不断熟悉 & 记忆。这个过程会存在一定的疑问，以下是记录：
 
