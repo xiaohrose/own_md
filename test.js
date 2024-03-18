@@ -8,12 +8,12 @@ class Mypromise {
     static PENDING = 'pending'
     status = Mypromise.PENDING;
 
-    static resolve () {}
+    static resolve() { }
 
-    static reject () {}
+    static reject() { }
 
     value = ''
-    constructor (fn) {
+    constructor(fn) {
 
         try {
             fn(this.resolve.bind(this), this.reject.bind(this));
@@ -22,22 +22,35 @@ class Mypromise {
         }
     }
 
-    reject () {}
+    reject(error) {
+        if (this.status !== Mypromise.PENDING) return;
 
-    resolve(value) {
-       
-            if (this.status !== Mypromise.PENDING) return
-
-            this.status = Mypromise.FULLFILLED;
-            this.value = value;
-
-            this.Fn.forEach(callback => {
-                callback()
-            })
+        this.status = Mypromise.REJECTED;
+        this.value = error;
+        this.Fn.forEach(item => this._handle(item));
     }
 
-    then (fn1 = () => {}, fn2 = () => {}) {
-       let promise = new Mypromise((resolve, reject) => {
+    resolve(value) {
+        if (this.status !== Mypromise.PENDING) return
+
+        if (value && (typeof value === 'function' || typeof value === 'object')) {
+            let then = value.then || value
+
+            if (typeof then === 'function') {
+                // 这里是要将改变状态的函数传递下去，所以直接return
+                then.call(value, reolve, reject);
+                return;
+            }
+        }
+
+        this.status = Mypromise.FULLFILLED;
+        this.value = value;
+
+        this.Fn.forEach(item => this._handle(item))
+    }
+
+    then(fn1 = () => { }, fn2 = () => { }) {
+        let promise = new Mypromise((resolve, reject) => {
 
             if (this.status === Mypromise.FULLFILLED) {
                 resolve(fn1(this.value))
@@ -49,20 +62,35 @@ class Mypromise {
                 return
             }
 
-            this.Fn.push(() => {
-                if (this.status == Mypromise.FULLFILLED) {
-                    this.resolve(fn1(this.value))
-                }else {
-                    this.reject(fn2(this.value))
-                }
-
+            this.Fn.push({
+                fullfilled: fn1,
+                rejected: fn2,
+                resolve,
+                reject
             })
         })
 
         return promise
     }
 
-    catch () {}
+    catch() { }
+
+
+    _handle(callback) {
+        if (this.status === Mypromise.PENDING) {
+            this.Fn.push(callback);
+            return;
+        }
+        // 这里如果then 中传入了成功或者失败需要执行的函数，那么就执行函数，如果没有，就将 value 值传递给resolve或者reject函数。
+        let cb = this.status === Mypromise.FULLFILLED ? callback.fullfilled:callback.rejected;
+        let value = this.value
+        if (cb) {
+            value = cb(this.value)
+        }
+
+        cb = this.status === Mypromise.FULLFILLED?callback.resolve:callback.reject;
+        cb(value)
+    }
 
 }
 
@@ -76,8 +104,8 @@ class Mypromise {
 })
 
 
-function handleResolvePromise (result, reject, resolve) {
-    
+function handleResolvePromise(result, reject, resolve) {
+
 }
 
 
