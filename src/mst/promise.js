@@ -1,4 +1,6 @@
 // 一直对promise 不够熟悉，虽然对于大部分api 使用相当数量，但是本质上面还是有一定生疏，所以，这次借这次对于promise 的实现，进一步了解promise的特性
+
+// 这个手写不错，借鉴
 class Mypromise {
 
     Fn = [];
