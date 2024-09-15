@@ -32,7 +32,7 @@ server {
 
 ```json
 upstream my_server {                                                         
-    server 192.168.0.104:8899;                                                
+    server 192.168.0104:8899;                                                
     keepalive 2000;
 }
 
