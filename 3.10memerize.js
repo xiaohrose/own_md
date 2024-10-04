@@ -1,5 +1,4 @@
 
-
 function mergeSortNums(num1, num2, m, n) {
 
     let len = m + n - 1;
